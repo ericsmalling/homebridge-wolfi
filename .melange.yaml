@@ -1,0 +1,28 @@
+package:
+  name: homebridge
+  version: 1.11.1
+  epoch: 0
+  description: "homebridge is a lightweight Node.js server that emulates the iOS HomeKit API"
+
+environment:
+  contents:
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    repositories:
+      - https://packages.wolfi.dev/os
+    packages:
+      - wolfi-base
+      - nodejs
+      - npm
+
+pipeline:
+  - uses: git-checkout
+    with:
+      repository: https://github.com/homebridge/homebridge
+      tag: v${{package.version}}
+      expected-commit: ba78c3a6675e59365365c37e594548c39c4fd91a
+
+  - name: npm install -g ${{package.name}}@${{package.version}} -prefix ${{targets.destdir}}/usr
+    runs: |
+      npm install
+
