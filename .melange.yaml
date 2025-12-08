@@ -22,7 +22,14 @@ pipeline:
       tag: v${{package.version}}
       expected-commit: ba78c3a6675e59365365c37e594548c39c4fd91a
 
-  - name: npm install -g ${{package.name}}@${{package.version}} -prefix ${{targets.destdir}}/usr
+  - name: npm test
     runs: |
+      set -x
       npm install
+      npm test
+
+  - name: npm install 
+    runs: |
+      npm install -g ${{package.name}}@${{package.version}} -prefix ${{targets.destdir}}/usr
+      
 
