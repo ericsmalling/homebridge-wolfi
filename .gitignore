@@ -1,2 +1,6 @@
 packages
 .DS_Store
+*.rsa*
+*.tar
+*.tgz
+sbom-*.spdx.json
