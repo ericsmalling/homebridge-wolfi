@@ -4,6 +4,10 @@ package:
   epoch: 0
   description: "homebridge is a lightweight Node.js server that emulates the iOS HomeKit API"
 
+  dependencies:
+    runtime:
+      - nodejs-24
+    
 environment:
   contents:
     keyring:
@@ -12,7 +16,7 @@ environment:
       - https://packages.wolfi.dev/os
     packages:
       - wolfi-base
-      - nodejs
+      - nodejs-24
       - npm
 
 pipeline:
@@ -31,5 +35,4 @@ pipeline:
   - name: npm install 
     runs: |
       npm install -g ${{package.name}}@${{package.version}} -prefix ${{targets.destdir}}/usr
-      
 

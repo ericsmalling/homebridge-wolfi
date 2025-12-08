@@ -1,0 +1,32 @@
+contents:
+  repositories:
+    - '@local ./packages'
+    - https://packages.wolfi.dev/os
+  keyring:
+    - ./melange.rsa.pub
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - homebridge@local
+    - busybox
+
+entrypoint:
+  type: command
+  command: /usr/bin/node
+
+cmd: /usr/bin/homebridge
+
+environment:
+  NPM_CONFIG_UPDATE_NOTIFIER: false
+
+accounts:
+  groups:
+    - groupname: homebridge
+      gid: 65532
+  users:
+    - username: homebridge
+      uid: 65532
+  run-as: homebridge
+
+work-dir: /app
+# archs:
+#   - aarch64
