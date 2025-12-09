@@ -39,14 +39,34 @@ pipeline:
       find ${{targets.destdir}}/usr/lib/node_modules -type d -exec chmod a+x {} \; 
             
 test:
+  environment:
+    contents:
+      keyring:
+        - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+      repositories:
+        - https://packages.wolfi.dev/os
+      packages:
+        - wolfi-base
+        - nodejs-24
+        - homebridge
   pipeline:
     - name: Verify homebridge installation
       runs: |
         set -x
-        ${{targets.destdir}}/usr/bin/homebridge --version
+        node /usr/bin/homebridge --version
 
     - name: Verify permissions of }/usr/lib/node_modules are all readable/executable
       runs: |
         set -x
-        find ${{targets.destdir}}/usr/lib/node_modules ! -perm -a=r -exec echo "File with incorrect permissions found: {}" \; -exit 1 \;
-        find ${{targets.destdir}}/usr/lib/node_modules -type d ! -perm -a=x -exec echo "Directory with incorrect permissions found: {}" \; -exit 1 \;
+        found=$(find /usr/lib/node_modules ! -perm -a=r -print -quit)
+        if [ -n "$found" ]; then
+          echo "File with incorrect permissions found: $found"
+          ls -l "$found"
+          exit 1
+        fi
+        found=$(find /usr/lib/node_modules -type d ! -perm -a=x -print -quit)
+        if [ -n "$found" ]; then
+          echo "Directory with incorrect permissions found: $found"
+          ls -ld "$found"
+          exit 1
+        fi
