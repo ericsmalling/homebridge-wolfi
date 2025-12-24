@@ -38,6 +38,7 @@ jobs:
         with:
           sign-with-temporary-key: true
           empty-workspace: true
+          archs: ${{ matrix.platform }}
 
       - uses: chainguard-images/actions/apko-publish@main
         id: apko
