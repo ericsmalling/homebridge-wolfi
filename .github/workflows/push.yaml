@@ -8,7 +8,15 @@ on:
 jobs:
   build:
     name: Build homebridge image
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
 
     # https://docs.github.com/en/actions/reference/authentication-in-a-workflow
     permissions:
@@ -34,7 +42,7 @@ jobs:
       - uses: chainguard-images/actions/apko-publish@main
         id: apko
         with:
-          archs: x86_64
+          archs: ${{ matrix.platform }}
           # keyring-append: /github/workspace/melange.rsa.pub
           tag: ghcr.io/${{ github.repository }}:latest
           source-date-epoch: ${{ steps.snapshot-date.outputs.epoch }}
