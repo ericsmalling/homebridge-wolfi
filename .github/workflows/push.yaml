@@ -39,11 +39,11 @@ jobs:
           tag: ghcr.io/${{ github.repository }}:latest
           source-date-epoch: ${{ steps.snapshot-date.outputs.epoch }}
 
-      - uses: docker/login-action@bb984efc561711aaa26e433c32c3521176eae55b # v1.13.0
-        with:
-          registry: cgr.dev
-          username: ${{ github.repository_owner }}
-          password: ${{ github.token }}
+      # - uses: docker/login-action@bb984efc561711aaa26e433c32c3521176eae55b # v1.13.0
+      #   with:
+      #     registry: cgr.dev
+      #     username: ${{ github.repository_owner }}
+      #     password: ${{ github.token }}
 
       - shell: bash
         run: |
