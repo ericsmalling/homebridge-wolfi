@@ -50,6 +50,7 @@ jobs:
       - package-build
       
     steps:
+      - uses: actions/checkout@main
       - name: Generate snapshot date
         id: snapshot-date
         run: |
