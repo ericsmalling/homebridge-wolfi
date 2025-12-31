@@ -39,11 +39,14 @@ jobs:
           path: ./packages/${{ matrix.platform }}
 
   image-build:
-    name: Build homebridge image
+    name: Build homebridge image    
+    
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
-
+    needs:
+      - package-build
+      
     steps:
       - name: Generate snapshot date
         id: snapshot-date
