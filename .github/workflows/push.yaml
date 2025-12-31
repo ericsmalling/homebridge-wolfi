@@ -58,6 +58,13 @@ jobs:
         shell: bash
       
       - uses: actions/download-artifact@v5
+        with:
+          path: path/to/artifacts
+          merge-multiple: true
+          
+      - name: list-packages
+        run: tree ./packages
+
       - uses: chainguard-images/actions/apko-publish@main
         id: apko
         with:
