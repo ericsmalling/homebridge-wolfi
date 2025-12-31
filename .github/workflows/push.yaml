@@ -74,8 +74,7 @@ jobs:
         id: apko
         with:
           archs: x86_64, aarch64
-          keyring-append: ./packages/aarch64/melange.rsa.pub, ./packages/x86_64/melange.rsa.pub
-            - 
+          keyring-append: ./packages/aarch64/melange.rsa.pub ./packages/x86_64/melange.rsa.pub
           tag: ghcr.io/${{ github.repository }}:latest
           source-date-epoch: ${{ steps.snapshot-date.outputs.epoch }}
 
