@@ -42,7 +42,7 @@ jobs:
     name: Build homebridge image
     strategy:
       fail-fast: false
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Generate snapshot date
