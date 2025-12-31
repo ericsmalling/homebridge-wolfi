@@ -6,8 +6,8 @@ on:
     - cron: '0 5 * * *'
 
 jobs:
-  build:
-    name: Build homebridge image
+  package-build:
+    name: Build homebridge package
     strategy:
       fail-fast: false
       matrix:
@@ -25,13 +25,6 @@ jobs:
       contents: read
 
     steps:
-      - name: Generate snapshot date
-        id: snapshot-date
-        run: |
-          echo ::set-output name=date::$(date -u +%Y%m%d)
-          echo ::set-output name=epoch::$(date -u +%s)
-        shell: bash
-
       - uses: actions/checkout@main
       - uses: sigstore/cosign-installer@main
       - uses: chainguard-dev/actions/melange-build@main
@@ -40,10 +33,30 @@ jobs:
           empty-workspace: true
           archs: ${{ matrix.platform }}
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: ./packages/${{ matrix.platform }}
+
+  image-build:
+    name: Build homebridge image
+    strategy:
+      fail-fast: false
+      runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate snapshot date
+        id: snapshot-date
+        run: |
+          echo ::set-output name=date::$(date -u +%Y%m%d)
+          echo ::set-output name=epoch::$(date -u +%s)
+        shell: bash
+
+      - uses: actions/download-artifact@v5
       - uses: chainguard-images/actions/apko-publish@main
         id: apko
         with:
-          archs: ${{ matrix.platform }}
+          archs: { x86_64, aarch64 }
           # keyring-append: /github/workspace/melange.rsa.pub
           tag: ghcr.io/${{ github.repository }}:latest
           source-date-epoch: ${{ steps.snapshot-date.outputs.epoch }}
