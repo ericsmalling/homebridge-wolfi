@@ -56,7 +56,7 @@ jobs:
       - uses: chainguard-images/actions/apko-publish@main
         id: apko
         with:
-          archs: { x86_64, aarch64 }
+          archs: x86_64, aarch64
           # keyring-append: /github/workspace/melange.rsa.pub
           tag: ghcr.io/${{ github.repository }}:latest
           source-date-epoch: ${{ steps.snapshot-date.outputs.epoch }}
