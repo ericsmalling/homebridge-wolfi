@@ -34,7 +34,11 @@ jobs:
           archs: ${{ matrix.platform }}
       - name: list-packages
         run: tree ./packages
-        
+
+      - name: copy signing-cert
+        run: |
+          cp melange.rsa.pub ./packages/${{ matrix.platform }}/melange.rsa.pub
+
       - uses: actions/upload-artifact@v4
         with:
           name: package-${{ matrix.platform }}
@@ -57,7 +61,7 @@ jobs:
           echo ::set-output name=date::$(date -u +%Y%m%d)
           echo ::set-output name=epoch::$(date -u +%s)
         shell: bash
-      
+
       - uses: actions/download-artifact@v5
         with:
           path: ./packages
@@ -70,7 +74,8 @@ jobs:
         id: apko
         with:
           archs: x86_64, aarch64
-          # keyring-append: /github/workspace/melange.rsa.pub
+          keyring-append: ./packages/aarch64/melange.rsa.pub, ./packages/x86_64/melange.rsa.pub
+            - 
           tag: ghcr.io/${{ github.repository }}:latest
           source-date-epoch: ${{ steps.snapshot-date.outputs.epoch }}
 
