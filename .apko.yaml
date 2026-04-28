@@ -1,9 +1,9 @@
 contents:
   repositories:
     - '@local ./packages'
-    - https://packages.wolfi.dev/os
+    - https://apk.cgr.dev/chainguard
   keyring:
-    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    - https://apk.cgr.dev/chainguard/wolfi-signing.rsa.pub
   packages:
     - homebridge@local
     - busybox
